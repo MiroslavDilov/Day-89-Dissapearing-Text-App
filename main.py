@@ -14,10 +14,13 @@ class DissapearingTextGUI:
 
 
         # How much time you can pass w/o writing
-        self.time_for_writing = 10
+        self.time_for_writing = 7
 
         # Time not written (second counter)
         self.time_not_written = self.time_for_writing
+
+        # Variable to check if the text was deleted
+        self.is_deleted = False
 
         # Entry
         self.entry = Text(
@@ -50,7 +53,7 @@ class DissapearingTextGUI:
             print(count)
             if prev_text == text:
                 self.window.after(1000, self.check_text, count - 1, text)
-                print("OPAAA")
+                # print("OPAAA")
 
                 self.countdown_label(self.time_not_written)
             else:
@@ -63,6 +66,20 @@ class DissapearingTextGUI:
 
                 # Resetting Label
                 self.reset_label()
+        else:
+            self.upper_text['text'] = "Try Again  😈"
+            if not self.is_deleted:
+                self.entry.delete(1.0, END)
+                self.is_deleted = True
+            if prev_text != text:
+                # Resetting timers
+
+                count = self.time_for_writing
+                self.window.after(1000, self.check_text, count, text)
+                self.time_not_written = self.time_for_writing
+            else:
+                self.window.after(1000, self.check_text, count-1, text)
+
 
 
 dissapearing_text_gui = DissapearingTextGUI()
